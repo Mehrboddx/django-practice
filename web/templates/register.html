@@ -1,0 +1,37 @@
+{% extends "template.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+
+{% if code %}
+  <!-- Show completion form when code is present -->
+  <div class="card">
+    <h2>Complete Registration</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="code" value="{{ code }}">
+      <input type="hidden" name="email" value="{{ email }}">
+      <p>Code: {{ code }}</p>
+      <p>Email: {{ email }}</p>
+      <button type="submit">Confirm Account</button>
+    </form>
+  </div>
+{% else %}
+  <!-- Show initial registration form when no code -->
+  <div class="card">
+    <h2>Start Registration</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="requestcode" value="1">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      
+      <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_SITE_KEY }}"></div>
+      
+      <button type="submit">Send Confirmation Email</button>
+    </form>
+  </div>
+{% endif %}
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

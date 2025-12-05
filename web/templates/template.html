@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Mehr{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --bg:#0f172a; --card:#111827; --text:#e5e7eb; --muted:#94a3b8; --accent:#38bdf8; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family: "Segoe UI", sans-serif; background:linear-gradient(145deg,#0f172a,#0b1220); color:var(--text); }
+    header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:rgba(17,24,39,0.9); position:sticky; top:0; }
+    header a { color:var(--text); text-decoration:none; font-weight:600; margin-right:16px; }
+    nav a { color:var(--muted); margin-left:12px; }
+    nav a:hover { color:var(--accent); }
+    .shell { max-width:960px; margin:32px auto; padding:0 16px; }
+    .card { background:var(--card); border:1px solid #1f2937; border-radius:12px; padding:24px; box-shadow:0 20px 50px rgba(0,0,0,0.35); }
+    form { display:grid; gap:12px; }
+    input, button, textarea { width:100%; padding:12px; border-radius:10px; border:1px solid #1f2937; background:#0b1220; color:var(--text); }
+    button { background:var(--accent); color:#0b1220; font-weight:700; cursor:pointer; border:none; }
+    button:hover { filter:brightness(1.05); }
+    .flash { margin:16px 0; padding:12px 14px; border-radius:10px; background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.35); }
+    footer { text-align:center; color:var(--muted); padding:32px 0 24px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><a href="/">Mehr</a></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/login/">Login</a>
+      <a href="/register/">Register</a>
+      <a href="/resetpassword/">Reset</a>
+    </nav>
+  </header>
+
+  {% if message %}
+    <div class="shell"><div class="flash">{{ message }}</div></div>
+  {% endif %}
+
+  <main class="shell">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>Built with Django</footer>
+</body>
+</html>

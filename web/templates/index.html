@@ -1,0 +1,12 @@
+{% extends "template.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Welcome to Mehr</h1>
+  <p class="muted">Track expenses and incomes, manage tokens, and register securely.</p>
+  <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+    <a href="/login/"><button type="button">Login</button></a>
+    <a href="/register/"><button type="button">Register</button></a>
+  </div>
+</div>
+{% endblock %}
