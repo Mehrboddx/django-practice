@@ -1,7 +1,8 @@
 
 from json import JSONEncoder
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.db.models import Sum, Avg, Count, Max, Min, Count
 from django.views.decorators.csrf import csrf_exempt
 from web.models import User, Expense, Income, Token
 import datetime
@@ -45,7 +46,7 @@ def submit_income(request):
 def register(request):
     recaptcha_site_key = os.getenv('RECAPTCHA_SITE_KEY')
     
-    if 'code' not in request.GET:
+    if 'code' not in request.GET and request.method == 'POST':
         if not grecaptcha_verify(request):
             context = {'message': 'reCAPTCHA verification failed. Please try again.', 'RECAPTCHA_SITE_KEY': recaptcha_site_key}
             return render(request, 'register.html', context)
@@ -96,3 +97,28 @@ def register(request):
     else:
         context = {'message': '', 'RECAPTCHA_SITE_KEY': recaptcha_site_key}
         return render(request, 'register.html', context)
+    
+def index(request):
+    context = {}
+    return render(request, 'index.html', context)
+
+def login(request):
+    context = {}
+    return render(request, 'login.html', context)
+def password_reset(request):
+    context = {}
+    return render(request, 'resetpassword.html', context)
+
+def general_stats(request):
+    this_token = request.GET['token']
+    this_user = User.objects.get(token__key=this_token)
+    income  = Income.objects.filter(user=this_user).aggregate(sum_amout = Sum('amount'),
+                             avg_amount = Avg('amount'),
+                             count = Count('amount'))
+    expense = Expense.objects.filter(user=this_user).aggregate(sum_amout = Sum('amount'),
+                             avg_amount = Avg('amount'),
+                                count = Count('amount'))
+    context = {}
+    context['expense'] = expense
+    context['income'] = income
+    return JsonResponse(context, encoder= JSONEncoder)
